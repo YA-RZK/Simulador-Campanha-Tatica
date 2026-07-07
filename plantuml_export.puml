@@ -1,0 +1,340 @@
+@startuml SimuladorCampanha
+
+' Evita que o diagrama seja CORTADO pelo limite de renderização do PlantUML:
+' em vez de estourar o tamanho máximo e ser truncado, a imagem final é
+' redimensionada (encolhida) para caber dentro do limite abaixo.
+scale max 3600x4800
+skinparam dpi 90
+skinparam wrapWidth 220
+
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+skinparam packageStyle rectangle
+hide empty members
+
+' =============================================================================
+' Ponto de entrada
+' =============================================================================
+
+package "core.entrypoint" {
+
+  class DesktopLauncher {
+    +{static} void main(String[])
+  }
+
+  class MainGame {
+    +void create()
+  }
+
+  DesktopLauncher ..> MainGame : cria/lança
+}
+
+' =============================================================================
+' Entidades do jogo (unidades e grid)
+' =============================================================================
+
+package "core.entities" {
+
+  class Unit {
+    +int x, y
+    +int hp, maxHp, attackDamage
+    +String name
+    +boolean isPlayer
+    +boolean alive
+    +double evasion
+    --
+    +Unit(int, int, boolean, int, int, String)
+    +boolean move(int, int, Grid)
+    +void attack(Unit, GameScreen)
+    +int distanceTo(Unit)
+    +int distanceTo(int, int)
+    +boolean isAdjacentTo(Unit)
+    +boolean isAlive()
+  }
+
+  class Player extends Unit {
+    -double fleeChance
+    +boolean reachedDestination
+    --
+    +Player(int, int, String, int, int, double, double)
+    +void takeTurn(Grid, ArrayList<Enemy>, GameScreen)
+    -boolean fleeAndAdvance(Enemy, Grid, GameScreen)
+    -boolean stepTowardDestination(Grid)
+    -void moveRandom(Grid)
+    -Enemy findClosestLivingEnemy(ArrayList<Enemy>)
+  }
+
+  class Enemy extends Unit {
+    -int detectionRadius
+    -double aggressiveness
+    --
+    +Enemy(int, int, String, int, int, int, double)
+    +void takeTurn(Grid, ArrayList<Player>, GameScreen)
+    -Player findClosestActivePlayer(ArrayList<Player>)
+    -void stepToward(Unit, Grid)
+    -void moveRandom(Grid)
+  }
+
+  class Grid {
+    +int width, height
+    +Tile[][] tiles
+    +int destX, destY
+    --
+    +Grid()
+    +Grid(int, int)
+    +void setDestination(int, int)
+    +boolean isValid(int, int)
+  }
+
+  class Tile {
+    +boolean hasObstacle
+    +boolean isDestination
+    +Unit unit
+    --
+    +boolean isEmpty()
+  }
+
+  class Obstacle {
+    +int x, y
+    --
+    +Obstacle(int, int, Grid)
+  }
+}
+
+' =============================================================================
+' Configuração de mapas (carregada de JSON)
+' =============================================================================
+
+package "core.config" {
+
+  class MapConfig {
+    +String missionTitle
+    +int roundLimit
+    +GridCfg grid
+    +PosCfg destination
+    +PosCfg spawn
+    +List<PlayerCfg> players
+    +List<EnemyCfg> enemies
+    +List<ObstacleCfg> obstacles
+    --
+    +{static} MapConfig load()
+    +{static} MapConfig loadFile(String)
+    +{static} MapConfig loadDefault()
+  }
+
+  class "MapConfig.GridCfg" as GridCfg {
+    +int width, height
+  }
+
+  class "MapConfig.PosCfg" as PosCfg {
+    +int x, y
+  }
+
+  class "MapConfig.PlayerCfg" as PlayerCfg {
+    +int x, y
+    +String name
+    +int hp, damage
+    +double evasion
+    +double fleeChance
+  }
+
+  class "MapConfig.EnemyCfg" as EnemyCfg {
+    +int x, y
+    +String name
+    +int hp, damage
+    +int detectionRadius
+    +double aggressiveness
+  }
+
+  class "MapConfig.ObstacleCfg" as ObstacleCfg {
+    +int x, y
+  }
+
+  MapConfig "1" *-- "1" GridCfg
+  MapConfig "1" *-- "2" PosCfg : destination/spawn
+  MapConfig "1" *-- "many" PlayerCfg
+  MapConfig "1" *-- "many" EnemyCfg
+  MapConfig "1" *-- "many" ObstacleCfg
+}
+
+' =============================================================================
+' Gerenciamento de campanha e persistência (CSV)
+' =============================================================================
+
+package "core.campaign" {
+
+  class MissionManager {
+    -String campaignName
+    -List<String> mapFiles
+    -int currentIndex
+    -CampaignLogger logger
+    +int victories, defeats, draws
+    +List<MissionResult> resultsHistory
+    --
+    +{static} MissionManager load()
+    +{static} MissionManager loadDefault()
+    +MapConfig currentConfig()
+    +void advance(MissionResult, String)
+    +void flushSummary()
+    +boolean isFinished()
+    +String scoreString()
+    +String finalVerdict()
+  }
+
+  enum "MissionManager.MissionResult" as MissionResult {
+    VICTORY
+    DEFEAT
+    DRAW
+  }
+
+  class CampaignLogger {
+    -{static} String LOGS_DIR
+    -String sessionId
+    -String missionFile, summaryFile
+    --
+    +CampaignLogger(String)
+    +void logMission(int, int, String, MissionResult, String)
+    +void logSummary(MissionManager)
+    +{static} String getLogsDir()
+    +{static} File[] listMissionCsvFiles()
+    +{static} String resultLabel(MissionResult)
+  }
+
+  MissionManager "1" *-- "1" CampaignLogger
+  MissionManager "1" o-- "many" MissionResult : resultsHistory
+  MissionManager ..> MapConfig : carrega mapa atual
+  CampaignLogger ..> MissionResult : rotula resultado
+}
+
+' =============================================================================
+' Telas (implementam com.badlogic.gdx.Screen)
+' =============================================================================
+
+package "core.screens" {
+
+  class MainMenuScreen {
+    -MainGame game
+    --
+    +MainMenuScreen(MainGame)
+    +void show()
+    +void render(float)
+    -void startCampaign()
+  }
+
+  class GameScreen {
+    -MainGame game
+    -MissionManager missions
+    +Grid grid
+    +ArrayList<Player> playerUnits
+    +ArrayList<Enemy> enemyUnits
+    +ArrayList<Obstacle> obstacles
+    +boolean isPlayerTurn
+    +float turnTimer, turnDelay
+    +int currentRound, roundLimit
+    +String gameOverMessage
+    +MissionResult missionResult
+    --
+    +GameScreen(MainGame, MissionManager)
+    +void show()
+    +void render(float)
+    +void log(String)
+    ~void setupGame()
+    ~void playerTurn()
+    ~void enemyTurn()
+    ~String checkGameOver()
+    -void goToTransition()
+  }
+
+  class MissionTransitionScreen {
+    -MainGame game
+    -MissionManager missions
+    -MissionResult lastResult
+    -String missionResultMsg
+    --
+    +MissionTransitionScreen(MainGame, MissionManager, MissionResult, String)
+    +void show()
+    +void render(float)
+    -void goToNextScreen()
+  }
+
+  class CampaignEndScreen {
+    -MainGame game
+    -MissionManager missions
+    --
+    +CampaignEndScreen(MainGame, MissionManager)
+    +void show()
+    +void render(float)
+  }
+
+  class CampaignTotalsScreen {
+    -MainGame game
+    -Map<String, MapStat> statsByMap
+    -int sessionsRead, totalExecucoes
+    -int totalVitorias, totalDerrotas, totalEmpates
+    --
+    +CampaignTotalsScreen(MainGame)
+    +void show()
+    +void render(float)
+    -void loadData()
+  }
+
+  class "CampaignTotalsScreen.MapStat" as MapStat {
+    +int total, vitorias, derrotas, empates
+  }
+
+  CampaignTotalsScreen "1" *-- "many" MapStat
+}
+
+' =============================================================================
+' Utilitários
+' =============================================================================
+
+package "core.util" {
+  class TextUtils {
+    +{static} float drawWrapped(SpriteBatch, BitmapFont, String, float, float, float, Color)
+    +{static} float heightOf(BitmapFont, String, float)
+    +{static} String truncate(BitmapFont, String, float)
+  }
+  note bottom of TextUtils
+    Usada por todas as telas para desenhar
+    texto com quebra de linha automática.
+  end note
+}
+
+' =============================================================================
+' Relacionamentos entre entidades do jogo
+' =============================================================================
+
+Grid "1" *-- "many" Tile : contém
+Tile "0..1" o-- "0..1" Unit : ocupada por
+Obstacle --> Grid : marca hasObstacle
+Player ..> Enemy : busca inimigo próximo
+Enemy ..> Player : busca player próximo
+Unit ..> GameScreen : log()
+
+' =============================================================================
+' Relacionamentos das telas com a campanha
+' =============================================================================
+
+GameScreen "1" *-- "0..1" MissionManager
+GameScreen "1" *-- "0..1" Grid
+GameScreen "1" o-- "many" Player
+GameScreen "1" o-- "many" Enemy
+GameScreen "1" o-- "many" Obstacle
+
+MissionTransitionScreen "1" *-- "1" MissionManager
+CampaignEndScreen        "1" *-- "1" MissionManager
+CampaignEndScreen ..> CampaignLogger : flushSummary()
+CampaignTotalsScreen ..> CampaignLogger : lê missions_*.csv
+
+MainGame ..> MainMenuScreen : tela inicial
+
+MainMenuScreen ..> GameScreen : iniciar campanha
+MainMenuScreen ..> CampaignTotalsScreen : tela totalizadora
+
+GameScreen ..> MissionTransitionScreen : ao concluir missão
+MissionTransitionScreen ..> GameScreen : próxima missão
+MissionTransitionScreen ..> CampaignEndScreen : campanha finalizada
+CampaignEndScreen ..> CampaignTotalsScreen : histórico
+
+@enduml
