@@ -1,7 +1,7 @@
 # POO-2 — Simulador de Campanha Tática
 <img width="220" height="320" alt="IF" src="https://github.com/user-attachments/assets/b3a2614e-bac5-43d1-bd4d-89f1f8fc8bf5" />
 
-Este projeto é um Simulador de combate tático por turnos, desenvolvido em Java com LibGDX, no contexto da disciplina de Programação Orientada a Objetos. Um esquadrão de soldados precisa atravessar um grid até um ponto de destino, desviando ou enfrentando inimigos controlados por IA, ao longo de uma campanha com várias missões em sequência.
+Este projeto é um Simulador de combate tático por turnos, desenvolvido em Java com LibGDX, no contexto do Curso Bacharelado em Ciência da Computação na disciplina de Programação Orientada a Objetos . Um esquadrão de soldados precisa atravessar um grid até um ponto de destino, desviando ou enfrentando inimigos controlados por IA, ao longo de uma campanha com várias missões em sequência.
 
 Cada execução gera logs em CSV, que alimentam uma Tela Totalizadora com o histórico agregado de todas as sessões já jogadas.
 
@@ -19,18 +19,18 @@ Durante uma missão:
 Uma missão termina quando ocorre uma das seguintes condições:
 
 - Vitória
-  - algum soldado alcança o destino;
-  - ou todos os inimigos são eliminados.
+  - Algum soldado alcança o destino;
+  - Ou todos os inimigos são eliminados.
 - Derrota
   - todos os soldados são eliminados.
 - Empate
-  - o limite máximo de turnos é atingido.
+  - O limite máximo de turnos é atingido.
 
 Após o encerramento da missão:
 
-- o resultado é salvo em CSV;
-- a próxima missão é carregada automaticamente;
-- ao final da campanha é exibido um resumo geral da execução.
+- O resultado é salvo em CSV;
+- A próxima missão é carregada automaticamente;
+- Ao final da campanha é exibido um resumo geral da execução.
 
 ---
 
@@ -64,6 +64,10 @@ Após o encerramento da missão:
 
 ---
 
+### Diagrama de Classes
+
+<img width="2250" height="2583" alt="Diagrama de Classe" src="https://github.com/user-attachments/assets/ecf41ef3-af2f-4a4e-855f-39fbbc896ab4" />
+
 # Como Executar
 
 ## Pré-requisitos
@@ -77,3 +81,15 @@ Após o encerramento da missão:
 cd simulador
 mvn clean compile exec:java
 ```
+
+---
+
+## Fluxo das Telas
+
+<img width="1200" height="830" alt="MainScreen" src="https://github.com/user-attachments/assets/04500760-aad8-4495-a059-0e821b12f2a6" />
+### *Tela de Menu*
+
+<img width="1201" height="799" alt="GameScreen" src="https://github.com/user-attachments/assets/b9a295ab-9ce2-455d-8df2-51c917345d6d" />
+### *Tela de Simulação
+
+
