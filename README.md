@@ -66,6 +66,18 @@ Após o encerramento da missão:
 
 ### Diagrama de Classes
 
+O projeto acompanha um diagrama PlantUML:
+
+```
+plantuml_export.puml
+```
+
+Pode ser aberto utilizando:
+- VS Code + extensão PlantUML
+- IntelliJ IDEA
+- NetBeans
+- PlantUML Online
+
 <img width="2250" height="2583" alt="Diagrama de Classe" src="https://github.com/user-attachments/assets/ecf41ef3-af2f-4a4e-855f-39fbbc896ab4" />
 
 # Como Executar
@@ -120,7 +132,21 @@ A simulação ocorre automaticamente.
 *Tela Final*
 <img width="1199" height="800" alt="Tela Final" src="https://github.com/user-attachments/assets/d46d8f42-a28b-4991-b2ac-a1aaca72e47e" />
 
-### Total das Campanhas
+### Tela totalizadora
+
+A tela de estatísticas lê automaticamente todos os arquivos CSV existentes em:
+
+```
+logs/
+```
+
+Ela apresenta:
+
+- total de campanhas executadas;
+- quantidade de vitórias;
+- derrotas;
+- empates;
+- desempenho agregado por mapa.
 
 | Tecla | Ação |
 |--------|------|
@@ -130,7 +156,7 @@ A simulação ocorre automaticamente.
 | R | Recarregar CSVs |
 | ESC | Voltar |
 
-*Tela de todos os Resultados*
+*Tela Totalizadora*
 <img width="1197" height="795" alt="Tela de resultados totais" src="https://github.com/user-attachments/assets/bdca2762-ffa4-44fd-9a72-436a4fdecc1e" />
 
 ---
@@ -167,5 +193,70 @@ _Exemplo:_
 
 <img width="1001" height="523" alt="Campanha1" src="https://github.com/user-attachments/assets/e8011d5c-6ff2-4777-8aeb-b71db6846295" />
 
+Caso algum arquivo não seja encontrado, o simulador utiliza automaticamente um mapa padrão incorporado ao código.
 
+---
 
+# Inteligência Artificial
+
+## Soldados
+
+A cada turno:
+
+1. Permanecem parados caso já estejam no destino.
+2. Fogem ou contra-atacam inimigos adjacentes.
+3. Desviam de áreas perigosas.
+4. Avançam em direção ao objetivo.
+
+## Inimigos
+
+A cada turno:
+
+1. Atacam jogadores adjacentes.
+2. Perseguem soldados detectados.
+3. Patrulham aleatoriamente quando nenhum alvo é encontrado.
+
+---
+
+# Condições de Vitória
+
+A missão termina quando ocorre uma das seguintes situações:
+
+| Resultado | Condição |
+|------------|----------|
+| Vitória | Algum soldado chega ao destino |
+| Vitória | Todos os inimigos são eliminados |
+| Derrota | Todos os soldados morrem |
+| Empate | Limite de turnos atingido |
+
+---
+
+# Sistema de Logs
+
+Cada campanha gera automaticamente dois arquivos CSV dentro da pasta:
+
+```
+logs/
+```
+
+### Missions
+
+```
+missions_<timestamp>.csv
+```
+
+Contém uma linha para cada missão executada.
+
+### Summary
+
+```
+summary_<timestamp>.csv
+```
+
+Contém um resumo completo da campanha.
+*Exemplo:*
+<img width="660" height="193" alt="CSV" src="https://github.com/user-attachments/assets/79c2bba0-6513-41a7-ae73-d4c2d931c4a1" />
+
+---
+
+### Fim
