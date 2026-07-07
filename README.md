@@ -1,7 +1,7 @@
 # POO-2 — Simulador de Campanha Tática
 <img width="220" height="320" alt="IF" src="https://github.com/user-attachments/assets/b3a2614e-bac5-43d1-bd4d-89f1f8fc8bf5" />
 
-Este projeto é um Simulador de combate tático por turnos, desenvolvido em Java com LibGDX, no contexto do Curso Bacharelado em Ciência da Computação na disciplina de Programação Orientada a Objetos . Um esquadrão de soldados precisa atravessar um grid até um ponto de destino, desviando ou enfrentando inimigos controlados por IA, ao longo de uma campanha com várias missões em sequência.
+Este projeto é um Simulador de combate tático por turnos, desenvolvido em Java com LibGDX, no contexto do Curso Bacharelado em Ciência da Computação na disciplina de Programação Orientada a Objetos 2. Um esquadrão de soldados precisa atravessar um grid até um ponto de destino, desviando ou enfrentando inimigos controlados por IA, ao longo de uma campanha com várias missões em sequência.
 
 Cada execução gera logs em CSV, que alimentam uma Tela Totalizadora com o histórico agregado de todas as sessões já jogadas.
 
