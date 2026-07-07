@@ -1,0 +1,35 @@
+{
+  "missionTitle": "Missão 3 — Fortaleza Final",
+  "roundLimit": 30,
+
+  "grid": { "width": 14, "height": 14 },
+  "destination": { "x": 12, "y": 12 },
+  "spawn":       { "x":  1, "y":  1 },
+
+  "players": [
+    { "x": 1, "y": 1, "name": "Soldado 1", "hp": 15, "damage": 4, "evasion": 0.20, "fleeChance": 0.50 },
+    { "x": 2, "y": 1, "name": "Soldado 2", "hp": 15, "damage": 4, "evasion": 0.20, "fleeChance": 0.50 },
+    { "x": 1, "y": 2, "name": "Soldado 3", "hp": 15, "damage": 4, "evasion": 0.20, "fleeChance": 0.50 },
+    { "x": 0, "y": 1, "name": "Soldado 4", "hp": 15, "damage": 4, "evasion": 0.20, "fleeChance": 0.50 }
+  ],
+  
+
+  "enemies": [
+    { "x":  5, "y":  5, "name": "Elite A",         "hp": 14, "damage": 5, "detectionRadius": 4, "aggressiveness": 0.60 },
+    { "x": 10, "y":  4, "name": "Elite B",         "hp": 14, "damage": 5, "detectionRadius": 4, "aggressiveness": 0.60 },
+    { "x":  4, "y": 10, "name": "Elite C",         "hp": 14, "damage": 5, "detectionRadius": 4, "aggressiveness": 0.60 },
+    { "x":  8, "y":  8, "name": "Comandante",      "hp": 22, "damage": 6, "detectionRadius": 6, "aggressiveness": 0.90 },
+    { "x": 12, "y":  6, "name": "Franco-atirador", "hp": 10, "damage": 7, "detectionRadius": 5, "aggressiveness": 0.40 }
+  ],
+
+  "obstacles": [
+    { "x": 3, "y": 3 }, { "x": 3, "y": 4 }, { "x": 4, "y": 3 },
+    { "x": 6, "y": 2 }, { "x": 7, "y": 2 }, { "x": 8, "y": 2 },
+    { "x": 2, "y": 6 }, { "x": 2, "y": 7 }, { "x": 2, "y": 8 },
+    { "x": 6, "y": 6 },
+    { "x": 9, "y": 9 }, { "x": 10, "y": 9 }, { "x": 9, "y": 10 },
+    { "x": 11, "y": 5 }, { "x": 12, "y": 5 },
+    { "x": 5, "y": 11 }, { "x": 5, "y": 12 },
+    { "x": 7, "y": 11 }, { "x": 11, "y": 7 }
+  ]
+}
