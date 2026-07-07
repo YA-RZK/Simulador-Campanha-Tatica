@@ -86,10 +86,10 @@ mvn clean compile exec:java
 
 ## Fluxo das Telas
 
+*Tela de Menu*
 <img width="1200" height="830" alt="MainScreen" src="https://github.com/user-attachments/assets/04500760-aad8-4495-a059-0e821b12f2a6" />
-### *Tela de Menu*
 
+*Tela de Simulação*
 <img width="1201" height="799" alt="GameScreen" src="https://github.com/user-attachments/assets/b9a295ab-9ce2-455d-8df2-51c917345d6d" />
-### *Tela de Simulação
 
 
