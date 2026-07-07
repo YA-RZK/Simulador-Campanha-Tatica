@@ -86,10 +86,86 @@ mvn clean compile exec:java
 
 ## Fluxo das Telas
 
+### Controles - Main Menu
+| Tecla | Ação |
+|-------|------|
+| ENTER / 1 | Iniciar campanha |
+| T / 2 | Tela Totalizadora |
+| ESC | Sair |
+
 *Tela de Menu*
 <img width="1200" height="830" alt="MainScreen" src="https://github.com/user-attachments/assets/04500760-aad8-4495-a059-0e821b12f2a6" />
 
-*Tela de Simulação*
+### Game Screen
+
+A simulação ocorre automaticamente.
+
+*Tela da Simulação*
 <img width="1201" height="799" alt="GameScreen" src="https://github.com/user-attachments/assets/b9a295ab-9ce2-455d-8df2-51c917345d6d" />
+
+*Tela de Resultado da Rodada*
+<img width="1196" height="799" alt="GameScreen Resultado" src="https://github.com/user-attachments/assets/b2bf8a44-f328-4e60-b186-89799a5a296e" />
+
+*Tela de Transição*
+<img width="1200" height="798" alt="Tela de Transição" src="https://github.com/user-attachments/assets/81bf5d64-9f50-49e8-8065-e52f1931db8a" />
+
+### Fim da Campanha
+
+| Tecla | Ação |
+|--------|------|
+| ↑ ↓ | Navegar |
+| T | Abrir Totalizadora |
+| ESC | Sair |
+
+*Tela Final*
+<img width="1199" height="800" alt="Tela Final" src="https://github.com/user-attachments/assets/d46d8f42-a28b-4991-b2ac-a1aaca72e47e" />
+
+### Total das Campanhas
+
+| Tecla | Ação |
+|--------|------|
+| ↑ ↓ | Navegar |
+| PgUp / PgDn | Rolagem rápida |
+| Home / End | Início/Fim |
+| R | Recarregar CSVs |
+| ESC | Voltar |
+
+*Tela de todos os Resultados*
+<img width="1197" height="795" alt="Tela de resultados totais" src="https://github.com/user-attachments/assets/bdca2762-ffa4-44fd-9a72-436a4fdecc1e" />
+
+---
+
+# Configuração da Campanha
+
+A campanha é definida pelo arquivo:
+
+```json
+{
+  "campaignName": "Operação Resistência",
+  "maps": [
+    "map_missao_1.json",
+    "map_missao_2.json",
+    "map_missao_3.json"
+  ]
+}
+```
+*Imagem do Arquivo*
+
+<img width="609" height="314" alt="Campanha" src="https://github.com/user-attachments/assets/832a7203-84d4-4f44-912d-9bea07d8a935" />
+
+Cada missão possui seu próprio arquivo JSON contendo:
+
+- tamanho do grid;
+- posição inicial;
+- destino;
+- soldados;
+- inimigos;
+- obstáculos;
+- limite de turnos.
+
+_Exemplo:_
+
+<img width="1001" height="523" alt="Campanha1" src="https://github.com/user-attachments/assets/e8011d5c-6ff2-4777-8aeb-b71db6846295" />
+
 
 
