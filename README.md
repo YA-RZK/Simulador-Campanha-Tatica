@@ -96,6 +96,10 @@ mvn clean compile exec:java
 
 ---
 
+### Video de desmonstração:
+
+https://youtu.be/2xsFYewTkyo
+
 ## Fluxo das Telas
 
 ### Controles - Main Menu
